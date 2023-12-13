@@ -1,4 +1,20 @@
 #include <stdio.h>
+#include <stdlib.h>
+
+struct MonthData {
+    int pasteurizationTime;
+    float pasteurizationTemperature;
+    float homogenizationLevel;
+    int agingTime;
+    float agingTemperature;
+    float freezingTemperature;
+    float storageTemperature;
+    float totalSolids;
+    float weight;
+    float percentageOfTotalMilkSolids;
+    float percentageOfMilkfat;
+    struct MonthData *next;
+};
 
 int main() {
     // Standards 
@@ -16,9 +32,8 @@ int main() {
     const float STANDARD_percentageOfMilkfat = 10; 
     
 
-  int pasteurizationTime, agingTime, N;
-  float pasteurizationTemperature,  agingTemperature, homogenizationLevel,freezingTemperature, storageTemperature, totalSolids, weight, percentageOfTotalMilkSolids, percentageOfMilkfat;
-
+  int N;
+  
   double total_pTem = 0.0,total_pTim = 0,total_aTim = 0, total_aTem = 0.0, total_HL = 0.0, total_fTem = 0.0, total_sTem = 0.0, total_tSolids = 0.0,total_w = 0.0, total_pMS = 0.0, total_MFt = 0.0; 
   double avg1,avg2, avg3, avg4,avg5, avg6, avg7, avg8, avg9, avg10, avg11; 
     
@@ -33,67 +48,79 @@ int main() {
   printf("Enter the number of months to be observed: \n");
   scanf("%d", &N);
 
+   struct MonthData *head = NULL;
+   struct MonthData *current = NULL;
+
+
   for(int i=0; i<N; i++){
-    
+    struct MonthData *newMonth = (struct MonthData *)malloc(sizeof(struct MonthData));
+        newMonth->next = NULL;
 
     
     printf("Enter the data of No. %d month", i+1);
 
     
     printf("\n Enter pasteurization time(minutes): ");
-    scanf("%d", &pasteurizationTime);
-      total_pTem += pasteurizationTime;
+    scanf("%d", &newMonth->pasteurizationTime);
+      total_pTem += newMonth->pasteurizationTime;
 
     
     printf("Enter pasteurization temperature(Celsius): ");
-    scanf("%f", &pasteurizationTemperature);
-    total_pTim += pasteurizationTemperature;
+    scanf("%f", &newMonth->pasteurizationTemperature);
+    total_pTim += newMonth->pasteurizationTemperature;
 
     
     printf("Enter homogenization level(Psi): ");
-    scanf("%f", &homogenizationLevel);
-    total_HL += homogenizationLevel;
+    scanf("%f", &newMonth->homogenizationLevel);
+    total_HL += newMonth->homogenizationLevel;
 
     
     printf("Enter aging time(hours): ");
-    scanf("%d", &agingTime);
-    total_aTim += agingTime;
+    scanf("%d", &newMonth->agingTime);
+    total_aTim += newMonth->agingTime;
 
     
     printf("Enter aging temperature(Celsius): ");
-    scanf("%f", &agingTemperature);
-    total_aTem +=agingTemperature;
+    scanf("%f", &newMonth->agingTemperature);
+    total_aTem +=newMonth->agingTemperature;
 
     
     printf("Enter freezing temperature(Celsius): ");
-    scanf("%f", &freezingTemperature);
-    total_fTem += freezingTemperature;
+    scanf("%f", &newMonth->freezingTemperature);
+    total_fTem += newMonth->freezingTemperature;
 
     
     printf("Enter storage temperature(Celsius): ");
-    scanf("%f", &storageTemperature);
-    total_sTem += storageTemperature;
+    scanf("%f", &newMonth->storageTemperature);
+    total_sTem += newMonth->storageTemperature;
 
     
     printf("Enter total solids(Pounds per gallon): ");
-    scanf("%f", &totalSolids);
-    total_tSolids += totalSolids;
+    scanf("%f", &newMonth->totalSolids);
+    total_tSolids += newMonth->totalSolids;
 
     
     printf("Enter weight(Pounds per gallon ): ");
-    scanf("%f", &weight);
-    total_w += weight;
+    scanf("%f", &newMonth->weight);
+    total_w += newMonth->weight;
 
     
     printf("Enter percentage of total milk solids: ");
-    scanf("%f", &percentageOfTotalMilkSolids);
-    total_pMS += percentageOfTotalMilkSolids;
+    scanf("%f", &newMonth->percentageOfTotalMilkSolids);
+    total_pMS += newMonth->percentageOfTotalMilkSolids;
 
     
     printf("Enter percentage of milkfat: ");
-    scanf("%f", &percentageOfMilkfat);
-    total_MFt += percentageOfMilkfat;
-
+    scanf("%f", &newMonth->percentageOfMilkfat);
+    total_MFt += newMonth->percentageOfMilkfat;
+      
+    if (head == NULL) {
+        head = newMonth;
+            current = head;
+}   else {
+            current->next = newMonth;
+            current = newMonth;
+        }
       
 
   
@@ -178,5 +205,14 @@ int main() {
     fprintf(file, "Percentage of milkfat is violated.\n");
 
   fclose(file);
+    
+  struct MonthData *temp;
+  current = head;
+  while (current != NULL) {
+        temp = current;
+        current = current->next;
+        free(temp);
+    }
+    
   return 0;
 }
