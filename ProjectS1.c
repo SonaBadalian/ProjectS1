@@ -19,9 +19,15 @@ int main() {
   int pasteurizationTime, agingTime, N;
   float pasteurizationTemperature,  agingTemperature, homogenizationLevel,freezingTemperature, storageTemperature, totalSolids, weight, percentageOfTotalMilkSolids, percentageOfMilkfat;
 
-      double total_pTem = 0.0,total_pTim = 0,total_aTim = 0, total_aTem = 0.0, total_HL = 0.0, total_fTem = 0.0, total_sTem = 0.0, total_tSolids = 0.0,total_w = 0.0, total_pMS = 0.0, total_MFt = 0.0; 
-      double avg1,avg2, avg3, avg4,avg5, avg6, avg7, avg8, avg9, avg10, avg11; 
-  
+  double total_pTem = 0.0,total_pTim = 0,total_aTim = 0, total_aTem = 0.0, total_HL = 0.0, total_fTem = 0.0, total_sTem = 0.0, total_tSolids = 0.0,total_w = 0.0, total_pMS = 0.0, total_MFt = 0.0; 
+  double avg1,avg2, avg3, avg4,avg5, avg6, avg7, avg8, avg9, avg10, avg11; 
+    
+  FILE *file = fopen("Ice-cream production statistics.txt", "w");
+
+    if (file == NULL) {
+        fprintf(stderr, "Error opening file for writing.\n");
+        return 1;
+    }
 
 
   printf("Enter the number of months to be observed: \n");
@@ -106,17 +112,17 @@ int main() {
   avg11 = total_MFt / N; 
   
 
-  printf("Average of pasteurization temperature: %.2f\n", avg1);
-  printf("Average of pasteurization ime: %.2f\n", avg2);
-  printf("Average of homogenization evel: %.2f\n", avg3);
-  printf("Average of aging time: %.2f\n", avg4);
-  printf("Average of aging temperature: %.2f\n", avg5);
-  printf("Average of freezing temperature: %.2f\n", avg6);
-  printf("Average of storage temperature: %.2f\n", avg7);
-  printf("Average of total solids per gallon: %.2f\n", avg8);
-  printf("Average of weight: %.2f\n", avg9);
-  printf("Average of percentage of total milk solids: %.2f\n", avg10);
-  printf("Average of percentage of milkfat: %.2f\n", avg11);
+  fprintf(file, "Average of pasteurization temperature: %.2f\n", avg1);
+  fprintf(file, "Average of pasteurization ime: %.2f\n", avg2);
+  fprintf(file, "Average of homogenization evel: %.2f\n", avg3);
+  fprintf(file, "Average of aging time: %.2f\n", avg4);
+  fprintf(file, "Average of aging temperature: %.2f\n", avg5);
+  fprintf(file, "Average of freezing temperature: %.2f\n", avg6);
+  fprintf(file, "Average of storage temperature: %.2f\n", avg7);
+  fprintf(file, "Average of total solids per gallon: %.2f\n", avg8);
+  fprintf(file, "Average of weight: %.2f\n", avg9);
+  fprintf(file, "Average of percentage of total milk solids: %.2f\n", avg10);
+  fprintf(file, "Average of percentage of milkfat: %.2f\n", avg11);
   
 
     // Compare entered values to standards
@@ -131,47 +137,46 @@ int main() {
         avg10 >= STANDARD_percentageOfTotalMilkSolids &&
         avg11 >= STANDARD_percentageOfMilkfat){
       
-        printf("\n All the ice cream production parameters average met established standards during given  %d months.\n", N);
+        fprintf(file, "\n All the ice cream production parameters average met established standards during given  %d months.\n", N);
     } 
     
     else {
-        printf("\nNot all the ice cream production parameters averages met established standards during given  %d months.\n", N);
+        fprintf(file, "\nNot all the ice cream production parameters averages met established standards during given  %d months.\n", N);
     }
 
   if (avg1 != STANDARD_pasteurizationTemperature)
-    printf("Pasteurization temperature is violated.\n");
+    fprintf(file, "Pasteurization temperature is violated.\n");
   
   if (avg2 != STANDARD_pasteurizationTime )
-    printf("Pasteurization time is violated.\n");
+    fprintf(file, "Pasteurization time is violated.\n");
   
   if(avg3 < STANDARD_homogenizationLevel) 
-    printf("Homogenization level is violated.\n");
+    fprintf(file, "Homogenization level is violated.\n");
 
   if(avg4 < STANDARD_agingTime)
-    printf ("Aging time is violated.\n");
+    fprintf (file, "Aging time is violated.\n");
 
   if(avg5 !=  STANDARD_agingTemperature)
-    printf("Aging temperature is vioolated.\n");
+    fprintf(file, "Aging temperature is vioolated.\n");
     
   if(avg6 > STANDARD_freezingTemperature)
-    printf("Freezing temperature is violated.\n");
+    fprintf(file, "Freezing temperature is violated.\n");
 
   if(avg7 > STANDARD_storageTemperature_UL)
-    printf("Storage temperature is violated.\n");
+    fprintf(file, "Storage temperature is violated.\n");
   
   if(avg8 < STANDARD_totalSolids) 
-    printf("The amount of total solids per gallon is violated.\n");
+    fprintf(file, "The amount of total solids per gallon is violated.\n");
   
   if(avg9 < STANDARD_weight)
-    printf("Normal wight is violated.\n");
+    fprintf(file, "Normal wight is violated.\n");
   
   if(avg10 < STANDARD_percentageOfTotalMilkSolids)
-    printf("Percentage of total milk solids is violated.\n");
+    fprintf(file, "Percentage of total milk solids is violated.\n");
   
   if(avg11 < STANDARD_percentageOfMilkfat)
-    printf("Percentage of milkfat is violated.\n");
-  else
-    printf("Nothing has been violated.\n");
-  
-    return 0;
+    fprintf(file, "Percentage of milkfat is violated.\n");
+
+  fclose(file);
+  return 0;
 }
